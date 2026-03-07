@@ -26,8 +26,9 @@ const registerUser = async (req, res) => {
             token: generateToken(user._id),
         });
     } catch (error) {
-        res.status(500).json({ message: 'Server error' });
-    }   
+  console.error("Register error:", error); // 🆕 yeh add karo
+  res.status(500).json({ message: error.message }); // message bhi bhejo
+}
 };
 
 //@route POST /api/auth/login
@@ -47,8 +48,9 @@ const loginUser = async (req, res) => {
             res.status(401).json({ message: 'Invalid email or password' });
         }
     } catch (error) {
-        res.status(500).json({ message: 'Server error' });
-    }
+  console.error("Login error:", error); // 🆕 yeh add karo
+  res.status(500).json({ message: error.message });
+}
 };
 
 // @route GET /api/auth/me
