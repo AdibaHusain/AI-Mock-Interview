@@ -16,24 +16,16 @@ const generateInterview = async (req, res) => {
     }
 
     try {
-        const prompt = `You are an expert technical interviewer at a top tech company.
-        Job Role: ${jobRole}
-        Job Description: ${jobDescription}
+        const prompt = `You are an expert technical interviewer.
+Question: "${question.question}"
+Candidate's Answer: "${userAnswer}"
 
-        Generate exactly 6 interview questions for this role. 
-        Mix of: 2 technical, 2 behavioral, 1 system design, 1 situational.
-      
-        Respond ONLY in this exact JSON format, no extra text, no markdown:
-        {
-          "questions": [
-            { "question": "...", "type": "technical" },
-            { "question": "...", "type": "behavioral" },
-            { "question": "...", "type": "technical" },
-            { "question": "...", "type": "behavioral" },
-            { "question": "...", "type": "system_design" },
-            { "question": "...", "type": "situational" }
-          ]
-        }`;
+Evaluate the answer and respond ONLY in this JSON format, no extra text, no markdown:
+{
+  "score": <number from 0 to 10>,
+  "feedback": "<2-3 line constructive feedback>",
+  "refinedAnswer": "<A improved version of the candidate's answer with all important details, keywords and depth that was missing — written as if the candidate gave a perfect answer>"
+}`;
 
         const completion = await groq.chat.completions.create({
             model: "llama-3.3-70b-versatile",
@@ -155,7 +147,11 @@ Evaluate the answer and respond ONLY in this JSON format, no extra text, no mark
         interview.questions[questionIndex].aiFeedback = parsed.feedback;
         await interview.save();
 
-        res.json({ score: parsed.score, feedback: parsed.feedback });
+        res.json({ 
+           score: parsed.score, 
+           feedback: parsed.feedback,
+           refinedAnswer: parsed.refinedAnswer 
+       });
     } catch (error) {
         console.error("Submit answer error:", error);
         res.status(500).json({ message: error.message });
