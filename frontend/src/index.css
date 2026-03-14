@@ -16,9 +16,7 @@
   --font-body: 'Plus Jakarta Sans', sans-serif;
 }
 
-html {
-  scroll-behavior: smooth;
-}
+html { scroll-behavior: smooth; }
 
 body {
   background: var(--bg);
@@ -36,24 +34,123 @@ h1, h2, h3, h4, h5 {
   line-height: 1.15;
 }
 
-p {
-  line-height: 1.75;
-  letter-spacing: 0.01em;
-}
+p { line-height: 1.75; letter-spacing: 0.01em; }
 
-/* Scrollbar */
 ::-webkit-scrollbar { width: 4px; }
 ::-webkit-scrollbar-track { background: #04070f; }
 ::-webkit-scrollbar-thumb { background: var(--cyan); border-radius: 2px; }
 
+#root { position: relative; z-index: 1; }
+
 /* ─────────────────────────────────────────────
-   AURORA CANVAS — always behind everything
+   GRADIENT BUTTON — animating CSS properties
 ───────────────────────────────────────────── */
 
-/* All page content must sit above the fixed canvas */
-#root {
+@property --pos-x        { syntax: '<percentage>'; initial-value: 11.14%;  inherits: false; }
+@property --pos-y        { syntax: '<percentage>'; initial-value: 140%;    inherits: false; }
+@property --spread-x     { syntax: '<percentage>'; initial-value: 150%;    inherits: false; }
+@property --spread-y     { syntax: '<percentage>'; initial-value: 180%;    inherits: false; }
+@property --color-1      { syntax: '<color>';      initial-value: #000d1a; inherits: false; }
+@property --color-2      { syntax: '<color>';      initial-value: #003344; inherits: false; }
+@property --color-3      { syntax: '<color>';      initial-value: #005f6b; inherits: false; }
+@property --color-4      { syntax: '<color>';      initial-value: #00b4c8; inherits: false; }
+@property --color-5      { syntax: '<color>';      initial-value: #00f5ff; inherits: false; }
+@property --border-angle { syntax: '<angle>';      initial-value: 20deg;   inherits: true;  }
+@property --border-color-1 { syntax: '<color>';    initial-value: hsla(189, 100%, 60%, 0.15); inherits: true; }
+@property --border-color-2 { syntax: '<color>';    initial-value: hsla(189, 100%, 50%, 0.7);  inherits: true; }
+@property --stop-1       { syntax: '<percentage>'; initial-value: 37%;    inherits: false; }
+@property --stop-2       { syntax: '<percentage>'; initial-value: 61%;    inherits: false; }
+@property --stop-3       { syntax: '<percentage>'; initial-value: 78%;    inherits: false; }
+@property --stop-4       { syntax: '<percentage>'; initial-value: 90%;    inherits: false; }
+@property --stop-5       { syntax: '<percentage>'; initial-value: 100%;   inherits: false; }
+
+.gradient-btn {
   position: relative;
-  z-index: 1;
+  appearance: none;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  border-radius: 14px;
+  padding: 15px 40px;
+  font-family: 'Outfit', sans-serif;
+  font-size: 1rem;
+  font-weight: 700;
+  color: #fff;
+  text-decoration: none;
+  letter-spacing: -0.01em;
+  background: radial-gradient(
+    var(--spread-x) var(--spread-y) at var(--pos-x) var(--pos-y),
+    var(--color-1) var(--stop-1),
+    var(--color-2) var(--stop-2),
+    var(--color-3) var(--stop-3),
+    var(--color-4) var(--stop-4),
+    var(--color-5) var(--stop-5)
+  );
+  transition:
+    --pos-x 0.55s ease,
+    --pos-y 0.55s ease,
+    --spread-x 0.55s ease,
+    --spread-y 0.55s ease,
+    --color-1 0.55s ease,
+    --color-2 0.55s ease,
+    --color-3 0.55s ease,
+    --color-4 0.55s ease,
+    --color-5 0.55s ease,
+    --border-angle 0.55s ease,
+    --border-color-1 0.55s ease,
+    --border-color-2 0.55s ease,
+    --stop-1 0.55s ease,
+    --stop-2 0.55s ease,
+    --stop-3 0.55s ease,
+    --stop-4 0.55s ease,
+    --stop-5 0.55s ease,
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+  box-shadow: 0 0 30px rgba(0, 245, 255, 0.25);
+}
+
+/* Animated border via pseudo-element */
+.gradient-btn::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1.5px;
+  background: linear-gradient(
+    var(--border-angle),
+    var(--border-color-1),
+    var(--border-color-2)
+  );
+  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  mask-composite: exclude;
+  pointer-events: none;
+  transition: --border-angle 0.55s ease, --border-color-1 0.55s ease, --border-color-2 0.55s ease;
+}
+
+/* Hover — shifts gradient to bright cyan from bottom-left */
+.gradient-btn:hover {
+  --pos-x: 0%;
+  --pos-y: 92%;
+  --spread-x: 130%;
+  --spread-y: 110%;
+  --color-1: #00f5ff;
+  --color-2: #00b4c8;
+  --color-3: #007a8f;
+  --color-4: #003344;
+  --color-5: #000d1a;
+  --border-angle: 200deg;
+  --border-color-1: hsla(189, 100%, 85%, 0.08);
+  --border-color-2: hsla(189, 100%, 70%, 0.85);
+  --stop-1: 0%;
+  --stop-2: 12%;
+  --stop-3: 35%;
+  --stop-4: 70%;
+  --stop-5: 88%;
+  transform: translateY(-3px);
+  box-shadow: 0 0 50px rgba(0, 245, 255, 0.55), 0 12px 40px rgba(0,0,0,0.4);
+  color: #000;
 }
 
 /* ─────────────────────────────────────────────
@@ -64,56 +161,35 @@ p {
   from { opacity: 0; transform: translateY(32px); }
   to   { opacity: 1; transform: translateY(0); }
 }
-
 @keyframes pulse-glow {
   0%, 100% { box-shadow: 0 0 20px rgba(0,245,255,0.3); }
   50%       { box-shadow: 0 0 45px rgba(0,245,255,0.7); }
 }
-
 @keyframes float {
   0%, 100% { transform: translateY(0px); }
   50%       { transform: translateY(-12px); }
 }
-
-@keyframes spin {
-  to { transform: rotate(360deg); }
-}
+@keyframes spin { to { transform: rotate(360deg); } }
 
 .animate-fade-up    { animation: fadeUp 0.7s cubic-bezier(0.16,1,0.3,1) forwards; }
 .animate-pulse-glow { animation: pulse-glow 2s ease-in-out infinite; }
 .animate-float      { animation: float 3.5s ease-in-out infinite; }
 
-/* ─────────────────────────────────────────────
-   SCROLL REVEAL
-───────────────────────────────────────────── */
-
+/* Scroll reveal */
 .reveal {
   opacity: 0;
   transform: translateY(36px);
   transition: opacity 0.7s cubic-bezier(0.16,1,0.3,1),
               transform 0.7s cubic-bezier(0.16,1,0.3,1);
 }
-.reveal.visible {
-  opacity: 1;
-  transform: translateY(0);
-}
-.reveal-delay-1 { transition-delay: 0.1s; }
-.reveal-delay-2 { transition-delay: 0.25s; }
-.reveal-delay-3 { transition-delay: 0.4s; }
-.reveal-delay-4 { transition-delay: 0.55s; }
-
-/* ─────────────────────────────────────────────
-   GLASS SECTION DIVIDER
-   Used between hero and features to create depth
-───────────────────────────────────────────── */
+.reveal.visible       { opacity: 1; transform: translateY(0); }
+.reveal-delay-1       { transition-delay: 0.1s; }
+.reveal-delay-2       { transition-delay: 0.25s; }
+.reveal-delay-3       { transition-delay: 0.4s; }
+.reveal-delay-4       { transition-delay: 0.55s; }
 
 .section-divider {
   height: 1px;
-  background: linear-gradient(90deg,
-    transparent,
-    rgba(0, 245, 255, 0.2),
-    rgba(124, 58, 237, 0.2),
-    transparent
-  );
+  background: linear-gradient(90deg, transparent, rgba(0,245,255,0.2), rgba(124,58,237,0.2), transparent);
   margin: 0 2rem;
 }
