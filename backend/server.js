@@ -9,6 +9,15 @@ connectDB();
 
 const app = express();
 
+app.use(cors({
+  origin: [
+    "http://localhost:5173",                  
+    "https://mockmindai.vercel.app",         
+    process.env.FRONTEND_URL                    
+  ],
+  credentials: true,
+}));
+
 //Middlewares
 app.use(cors());
 app.use(express.json());
