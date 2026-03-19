@@ -1,7 +1,30 @@
 import { useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
+import { Mic, BrainCircuit, BarChart3, Target, ArrowRight, Sparkles } from "lucide-react";
 import Navbar from "../components/Navbar";
 import { AuroraBackground } from "../components/AuroraBackground";
+
+// ── Feature Icon Box ──
+function FeatureIcon({ icon: Icon, color }) {
+  return (
+    <div
+      style={{
+        width: "52px",
+        height: "52px",
+        borderRadius: "14px",
+        background: `${color}12`,
+        border: `1px solid ${color}28`,
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        marginBottom: "1.4rem",
+        flexShrink: 0,
+      }}
+    >
+      <Icon size={22} color={color} strokeWidth={1.8} />
+    </div>
+  );
+}
 
 export default function Home() {
   const featuresRef = useRef(null);
@@ -20,10 +43,34 @@ export default function Home() {
   }, []);
 
   const features = [
-    { icon: "🎙️", title: "Voice-First Answers",    desc: "Speak naturally like a real interview. Web Speech API captures every word in real-time.", color: "#00f5ff" },
-    { icon: "🧠", title: "AI-Powered Scoring",      desc: "Groq's LLaMA model evaluates your answers instantly with scores and detailed feedback.",  color: "#a78bfa" },
-    { icon: "📊", title: "Detailed Reports",         desc: "Get strengths, weaknesses, and personalized improvement tips after every session.",        color: "#67e8f9" },
-    { icon: "🎯", title: "Role-Specific Questions",  desc: "Technical, behavioral, system design — tailored exactly to your target job role.",         color: "#818cf8" },
+    {
+      icon: Mic,
+      title: "Voice-First Interview",
+      desc: "Respond verbally just like a real interview setting. Your speech is transcribed in real-time using the Web Speech API — no typing required.",
+      color: "#00f5ff",
+      tag: "Speech Recognition",
+    },
+    {
+      icon: BrainCircuit,
+      title: "AI Answer Evaluation",
+      desc: "Every response is assessed by Groq's LLaMA 3.3 model for depth, accuracy, and communication quality — with a score out of 10.",
+      color: "#a78bfa",
+      tag: "LLaMA 3.3 × Groq",
+    },
+    {
+      icon: BarChart3,
+      title: "Performance Reports",
+      desc: "Receive a structured breakdown of your strengths, areas to improve, and a refined version of each answer after every session.",
+      color: "#67e8f9",
+      tag: "Post-Session Analysis",
+    },
+    {
+      icon: Target,
+      title: "Role-Tailored Questions",
+      desc: "Questions are generated dynamically from the job description you provide — covering technical, behavioural, system design, and situational formats.",
+      color: "#818cf8",
+      tag: "Custom JD Parsing",
+    },
   ];
 
   const stats = [
@@ -115,13 +162,9 @@ export default function Home() {
 
           {/* CTA Buttons */}
           <div style={{ display: "flex", gap: "1rem", flexWrap: "wrap", justifyContent: "center", animation: "fadeUp 0.6s 0.3s ease both" }}>
-
-            {/* ✅ Gradient button — primary */}
             <Link to="/register" className="gradient-btn">
               Start Practicing Free →
             </Link>
-
-            {/* Ghost button — secondary */}
             <Link
               to="/login"
               style={{
@@ -168,33 +211,104 @@ export default function Home() {
         <div className="section-divider" />
 
         {/* ── FEATURES ── */}
-        <section ref={featuresRef} style={{ padding: "7rem 2rem", maxWidth: "1100px", margin: "0 auto" }}>
-          <div className="reveal" style={{ textAlign: "center", marginBottom: "4rem" }}>
-            <h2 style={{ fontFamily: "Outfit, sans-serif", fontSize: "clamp(2rem, 4vw, 3.2rem)", fontWeight: 800, letterSpacing: "-0.02em", marginBottom: "1rem" }}>
+        <section ref={featuresRef} style={{ padding: "7rem 2rem", maxWidth: "1200px", margin: "0 auto" }}>
+
+          {/* Section header */}
+          <div className="reveal" style={{ marginBottom: "4rem" }}>
+            <div style={{ display: "inline-flex", alignItems: "center", gap: "8px", padding: "5px 14px", borderRadius: "50px", background: "rgba(129,140,248,0.08)", border: "1px solid rgba(129,140,248,0.2)", marginBottom: "1.2rem" }}>
+              <Sparkles size={13} color="#818cf8" />
+              <span style={{ fontSize: "0.75rem", color: "#818cf8", fontWeight: 600, letterSpacing: "0.06em", textTransform: "uppercase", fontFamily: "Outfit, sans-serif" }}>
+                Platform Capabilities
+              </span>
+            </div>
+            <h2
+              style={{
+                fontFamily: "Outfit, sans-serif",
+                fontSize: "clamp(2rem, 4vw, 3rem)",
+                fontWeight: 800,
+                letterSpacing: "-0.02em",
+                marginBottom: "0.8rem",
+                maxWidth: "600px",
+              }}
+            >
               Everything you need to{" "}
-              <span style={{ color: "#00f5ff" }}>land the job</span>
+              <span style={{ color: "#00f5ff" }}>land the role</span>
             </h2>
-            <p style={{ color: "rgba(255,255,255,0.4)", fontSize: "1rem", fontFamily: "Plus Jakarta Sans, sans-serif" }}>
-              Built for students. Designed to get results.
+            <p style={{ color: "rgba(255,255,255,0.38)", fontSize: "1rem", fontFamily: "Plus Jakarta Sans, sans-serif", maxWidth: "480px", lineHeight: 1.7 }}>
+              A structured mock interview experience designed to build real confidence — not just familiarity with questions.
             </p>
           </div>
 
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))", gap: "1.5rem" }}>
+          {/* Feature cards grid */}
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))", gap: "1.5rem" }}>
             {features.map((f, i) => (
               <div
                 key={f.title}
                 className={`reveal reveal-delay-${i + 1}`}
-                style={{ padding: "2rem", borderRadius: "20px", background: "rgba(4,7,15,0.6)", border: "1px solid rgba(255,255,255,0.07)", backdropFilter: "blur(20px)", transition: "all 0.3s ease", cursor: "default" }}
-                onMouseEnter={(e) => { e.currentTarget.style.border = `1px solid ${f.color}40`; e.currentTarget.style.background = "rgba(4,7,15,0.75)"; e.currentTarget.style.transform = "translateY(-6px)"; e.currentTarget.style.boxShadow = `0 20px 40px ${f.color}18`; }}
-                onMouseLeave={(e) => { e.currentTarget.style.border = "1px solid rgba(255,255,255,0.07)"; e.currentTarget.style.background = "rgba(4,7,15,0.6)"; e.currentTarget.style.transform = "translateY(0)"; e.currentTarget.style.boxShadow = "none"; }}
+                style={{
+                  padding: "2rem",
+                  borderRadius: "20px",
+                  background: "rgba(4,7,15,0.6)",
+                  border: "1px solid rgba(255,255,255,0.07)",
+                  backdropFilter: "blur(20px)",
+                  transition: "all 0.3s ease",
+                  cursor: "default",
+                  display: "flex",
+                  flexDirection: "column",
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.border = `1px solid ${f.color}35`;
+                  e.currentTarget.style.background = "rgba(4,7,15,0.78)";
+                  e.currentTarget.style.transform = "translateY(-5px)";
+                  e.currentTarget.style.boxShadow = `0 24px 48px rgba(0,0,0,0.3), 0 0 0 1px ${f.color}18`;
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.border = "1px solid rgba(255,255,255,0.07)";
+                  e.currentTarget.style.background = "rgba(4,7,15,0.6)";
+                  e.currentTarget.style.transform = "translateY(0)";
+                  e.currentTarget.style.boxShadow = "none";
+                }}
               >
-                <div style={{ fontSize: "2.5rem", marginBottom: "1rem", display: "inline-flex", padding: "12px", borderRadius: "14px", background: `${f.color}12`, border: `1px solid ${f.color}25` }}>
-                  {f.icon}
+                {/* Icon */}
+                <FeatureIcon icon={f.icon} color={f.color} />
+
+                {/* Tag */}
+                <div style={{ display: "inline-flex", alignItems: "center", gap: "6px", marginBottom: "0.7rem" }}>
+                  <span
+                    style={{
+                      fontSize: "0.7rem",
+                      padding: "3px 10px",
+                      borderRadius: "50px",
+                      background: `${f.color}10`,
+                      border: `1px solid ${f.color}25`,
+                      color: f.color,
+                      fontWeight: 600,
+                      letterSpacing: "0.05em",
+                      textTransform: "uppercase",
+                      fontFamily: "Outfit, sans-serif",
+                    }}
+                  >
+                    {f.tag}
+                  </span>
                 </div>
-                <h3 style={{ fontFamily: "Outfit, sans-serif", fontSize: "1.15rem", fontWeight: 700, marginBottom: "0.6rem", color: f.color, letterSpacing: "-0.01em" }}>
+
+                {/* Title */}
+                <h3
+                  style={{
+                    fontFamily: "Outfit, sans-serif",
+                    fontSize: "1.1rem",
+                    fontWeight: 700,
+                    marginBottom: "0.7rem",
+                    color: "rgba(255,255,255,0.92)",
+                    letterSpacing: "-0.01em",
+                    lineHeight: 1.3,
+                  }}
+                >
                   {f.title}
                 </h3>
-                <p style={{ color: "rgba(255,255,255,0.5)", fontSize: "0.9rem", lineHeight: 1.7, fontFamily: "Plus Jakarta Sans, sans-serif" }}>
+
+                {/* Description */}
+                <p style={{ color: "rgba(255,255,255,0.42)", fontSize: "0.875rem", lineHeight: 1.75, fontFamily: "Plus Jakarta Sans, sans-serif", flex: 1 }}>
                   {f.desc}
                 </p>
               </div>
@@ -223,13 +337,11 @@ export default function Home() {
               Your first job is one <br />
               <span style={{ color: "#00f5ff" }}>interview away.</span>
             </h2>
-            <p style={{ color: "rgba(255,255,255,0.4)", marginBottom: "2.2rem", fontFamily: "Plus Jakarta Sans, sans-serif", lineHeight: 1.75 }}>
+            <p style={{ color: "rgba(255,255,255,0.38)", marginBottom: "2.2rem", fontFamily: "Plus Jakarta Sans, sans-serif", lineHeight: 1.75 }}>
               Stop worrying. Start practicing. Get confident.
             </p>
-
-            {/* ✅ Gradient button in CTA banner too */}
             <Link to="/register" className="gradient-btn">
-              Start for Free Now
+              Start for Free — No Card Needed
             </Link>
           </div>
         </section>
